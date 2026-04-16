@@ -1,40 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-  body { background-color: #525151; }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live</title>
+    <style>
+        body {
+            background-color: #525151;
+        }
+
+        .centered-text {
+            text-align: center;
+            font-size: 200px;
+            margin: 0;
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            padding: 8px 14px;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            background: #f5c542;
+            color: #1f1f1f;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button:focus-visible {
+            background: #ffd96a;
+            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(255, 217, 106, 0.35), 0 10px 20px rgba(0, 0, 0, 0.4);
+            outline: none;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .footer a {
+            margin: 0 15px;
+            color: inherit;
+        }
+    </style>
 </head>
 <body>
-<style>
-  .centered-text {
-    text-align: center;
-    font-size: 200px;
-    margin: 0;
-  }
-  .footer {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 18px;
-  }
-  .footer a {
-    margin: 0 15px;
-    color: inherit;
-  }
-</style>
-<p class="centered-text">TBA</p>
-<a href="index.html" style="position: fixed; top: 10px; left: 10px; font-size: 24px;">
-    Home
-</a>
-<div class="footer">
-  <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
-  <a href="mailto:yourdovehands@gmail.com">Email</a>
-</div>
+    <p class="centered-text">TBA</p>
+
+    <a href="index.html" class="nav-button">Home</a>
+
+    <div class="footer">
+        <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
+        <a href="mailto:yourdovehands@gmail.com">Email</a>
+    </div>
 </body>
 </html>

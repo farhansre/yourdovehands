@@ -1,49 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-  body { background-color: #525151; }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demos</title>
+    <style>
+        body {
+            background-color: #525151;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+            padding-bottom: 60px;
+            box-sizing: border-box;
+        }
+
+        iframe {
+            max-width: 90vw;
+            max-height: calc(100vh - 110px);
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            padding: 8px 14px;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            background: #f5c542;
+            color: #1f1f1f;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button:focus-visible {
+            background: #ffd96a;
+            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(255, 217, 106, 0.35), 0 10px 20px rgba(0, 0, 0, 0.4);
+            outline: none;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .footer a {
+            margin: 0 15px;
+            color: inherit;
+        }
+    </style>
 </head>
 <body>
-<style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding-top: 50px; /* Space for Home link */
-    padding-bottom: 60px; /* Space for footer */
-    box-sizing: border-box;
-  }
-  iframe {
-    max-width: 90vw;
-    max-height: calc(100vh - 110px); /* Account for top and bottom space */
-  }
-  .footer {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 18px;
-  }
-  .footer a {
-    margin: 0 15px;
-    color: inherit;
-  }
-</style>
-<iframe width="90%" height="90%" src="https://www.youtube.com/embed/wJgu93zl3zY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<a href="index.html" style="position: fixed; top: 10px; left: 10px; font-size: 24px;">
-    Home
-</a>
-<div class="footer">
-  <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
-  <a href="mailto:yourdovehands@gmail.com">Email</a>
-</div>
+    <iframe width="90%" height="90%" src="https://www.youtube.com/embed/wJgu93zl3zY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <a href="index.html" class="nav-button">Home</a>
+
+    <div class="footer">
+      <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
+      <a href="mailto:yourdovehands@gmail.com">Email</a>
+    </div>
 </body>
 </html>

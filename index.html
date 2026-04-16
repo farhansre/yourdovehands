@@ -6,22 +6,41 @@
     <title>Home</title>
 
     <style>
-        body { 
-            background-color: #525151; 
+        body {
+            background-color: #525151;
         }
-    </style>
-</head>
 
-<body>
+        .nav-button {
+            position: fixed;
+            top: 10px;
+            font-size: 24px;
+            padding: 8px 14px;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            background: #f5c542;
+            color: #1f1f1f;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
 
-    <a href="live.html" style="position: fixed; top: 10px; left: 10px; font-size: 24px;">
-    Live
-</a>
-    <a href="demos.html" style="position: fixed; top: 10px; right: 10px; font-size: 24px;">
-    Demos
-</a>
+        .nav-button:hover,
+        .nav-button:focus-visible {
+            background: #ffd96a;
+            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(255, 217, 106, 0.35), 0 10px 20px rgba(0, 0, 0, 0.4);
+            outline: none;
+        }
 
-    <style>
+        .nav-left {
+            left: 10px;
+        }
+
+        .nav-right {
+            right: 10px;
+        }
+
         .footer {
             position: fixed;
             bottom: 20px;
@@ -30,11 +49,19 @@
             text-align: center;
             font-size: 18px;
         }
+
         .footer a {
             margin: 0 15px;
             color: inherit;
         }
     </style>
+</head>
+
+<body>
+
+    <a href="live.html" class="nav-button nav-left">Live</a>
+    <a href="demos.html" class="nav-button nav-right">Demos</a>
+
     <div class="footer">
         <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
         <a href="mailto:yourdovehands@gmail.com">Email</a>
