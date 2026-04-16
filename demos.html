@@ -16,10 +16,13 @@
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding-top: 50px; /* Space for Home link */
+    padding-bottom: 60px; /* Space for footer */
+    box-sizing: border-box;
   }
-  video {
+  iframe {
     max-width: 90vw;
-    max-height: 90vh;
+    max-height: calc(100vh - 110px); /* Account for top and bottom space */
   }
   .footer {
     position: fixed;
