@@ -22,11 +22,6 @@
       min-height: 100vh; display: flex; flex-direction: column;
       align-items: center; justify-content: center; padding: 14vh 5vw 12vh;
     }
-    .art-bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background: url("poster-collage.jpeg") center / cover no-repeat;
-      opacity: 0.18; mix-blend-mode: multiply;
-    }
     .home {
       position: fixed; top: clamp(16px, 3vh, 26px); left: clamp(18px, 4vw, 34px); z-index: 10;
       font-size: clamp(13px, 1.7vw, 15px); letter-spacing: 0.16em; text-transform: uppercase;
@@ -36,19 +31,34 @@
     .home:hover, .home:focus-visible { color: var(--dove); outline: none; }
 
     .page-title {
-      position: relative; z-index: 2;
       font-weight: 500; font-size: clamp(30px, 6vw, 56px); letter-spacing: 0.02em;
-      margin: 0 0 clamp(20px, 4vh, 34px); text-align: center;
+      margin: 0 0 clamp(22px, 4.5vh, 40px); text-align: center;
+    }
+
+    .demos-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(22px, 4vw, 48px);
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 980px;
+    }
+    .collage {
+      display: block;
+      width: min(80vw, 320px);
+      height: auto;
+      border-radius: 2px;
+      border: 5px solid #f7f1e2;
+      box-shadow: 0 12px 30px rgba(38, 31, 18, 0.32);
     }
     .player {
-      position: relative; z-index: 2;
-      width: min(92vw, 560px);
+      width: min(88vw, 460px);
       padding: clamp(24px, 4vw, 38px) clamp(22px, 4vw, 40px) clamp(26px, 4vw, 36px);
       border-radius: 4px;
-      background: rgba(48, 40, 24, 0.28);
+      background: rgba(247, 241, 226, 0.09);
       border: 1px solid rgba(247, 241, 226, 0.3);
-      box-shadow: 0 10px 26px rgba(38, 31, 18, 0.28);
-      backdrop-filter: blur(2px);
+      box-shadow: 0 10px 26px rgba(38, 31, 18, 0.24);
       text-align: center;
     }
     .track-title {
@@ -71,17 +81,19 @@
   </style>
 </head>
 <body>
-  <div class="art-bg"></div>
   <a href="index.html#menu" class="home">Home</a>
 
   <h1 class="page-title">Demos</h1>
-  <div class="player">
-    <p class="track-title">Heart Shotgun</p>
-    <p class="track-meta">Demo</p>
-    <audio controls preload="metadata">
-      <source src="heartshotgun.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+  <div class="demos-wrap">
+    <img class="collage" src="poster-collage.jpeg" alt="Your Dove Hands" onerror="this.style.display='none';" />
+    <div class="player">
+      <p class="track-title">Heart Shotgun</p>
+      <p class="track-meta">Demo</p>
+      <audio controls preload="metadata">
+        <source src="heartshotgun.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
   </div>
 
   <footer class="footer">

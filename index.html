@@ -69,9 +69,9 @@
     .to-title:hover, .to-title:focus-visible { color: var(--dove); outline: none; }
 
     .menu-dove {
-      height: clamp(120px, 20vh, 210px);
+      height: clamp(84px, 14vh, 150px);
       width: auto;
-      margin-bottom: clamp(6px, 1.6vh, 18px);
+      margin-bottom: clamp(2px, 1vh, 12px);
       opacity: 0.95;
       pointer-events: none;
       animation: float 8s ease-in-out infinite;
@@ -82,9 +82,11 @@
     }
 
     .wordmark-img {
-      width: clamp(260px, 58vw, 620px);
+      width: clamp(240px, 52vw, 500px);
       height: auto;
-      margin: 0 0 clamp(26px, 5vh, 52px);
+      max-height: 42vh;
+      object-fit: contain;
+      margin: 0 0 clamp(18px, 4vh, 40px);
       mix-blend-mode: multiply;
       user-select: none;
     }
