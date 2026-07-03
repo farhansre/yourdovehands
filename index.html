@@ -1,70 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Dove Hands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --beige: #e6ddca;
+      --beige-deep: #ded4bd;
+      --dove: #faf7ef;        /* soft white */
+      --dove-dim: rgba(250, 247, 239, 0.62);
+      --ink: #2c2823;
+      --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    }
 
-    <style>
-        body {
-            background-color: #525151;
-        }
+    * { box-sizing: border-box; }
 
-        .nav-button {
-            position: fixed;
-            top: 10px;
-            font-size: 24px;
-            padding: 8px 14px;
-            border: 2px solid #fff;
-            border-radius: 999px;
-            background: #ffffff;
-            color: #1f1f1f;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.35);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-        }
+    html, body { height: 100%; }
 
-        .nav-button:hover,
-        .nav-button:focus-visible {
-            background: #f2f2f2;
-            transform: translateY(-1px);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 10px 20px rgba(0, 0, 0, 0.4);
-            outline: none;
-        }
+    body {
+      margin: 0;
+      background-color: var(--beige);
+      color: var(--dove);
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
 
-        .nav-left {
-            left: 10px;
-        }
+    /* ---------- MENU (beige) ---------- */
+    .menu {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6vh 6vw 14vh;
+      background:
+        radial-gradient(120% 90% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
+      opacity: 0;
+      transition: opacity 1.1s ease 0.15s;
+    }
+    .menu.revealed { opacity: 1; }
 
-        .nav-right {
-            right: 10px;
-        }
+    .emblem {
+      width: clamp(78px, 12vw, 132px);
+      height: auto;
+      margin-bottom: clamp(14px, 3vh, 30px);
+      opacity: 0.92;
+      filter: drop-shadow(0 2px 5px rgba(60, 50, 38, 0.14));
+      user-select: none;
+      pointer-events: none;
+    }
 
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 18px;
-        }
+    .wordmark {
+      margin: 0 0 clamp(26px, 5vh, 54px);
+      font-weight: 300;
+      font-size: clamp(30px, 6vw, 58px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--dove);
+      text-shadow: 0 1px 0 rgba(60, 50, 38, 0.14);
+      line-height: 1.1;
+      padding-left: 0.32em; /* optical centering for letter-spacing */
+    }
 
-        .footer a {
-            margin: 0 15px;
-            color: inherit;
-        }
-    </style>
+    nav.links {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 2.4vh, 22px);
+      align-items: center;
+    }
+
+    nav.links a {
+      position: relative;
+      font-size: clamp(21px, 3.4vw, 34px);
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dove);
+      text-shadow: 0 1px 1px rgba(60, 50, 38, 0.16);
+      padding: 4px 6px;
+      transition: color 0.35s ease, letter-spacing 0.45s ease, opacity 0.35s ease;
+      opacity: 0.92;
+    }
+    nav.links a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      width: 0;
+      height: 1px;
+      background: var(--dove);
+      transform: translateX(-50%);
+      transition: width 0.45s ease;
+    }
+    nav.links a:hover,
+    nav.links a:focus-visible {
+      color: #fffdf8;
+      letter-spacing: 0.3em;
+      opacity: 1;
+      outline: none;
+    }
+    nav.links a:hover::after,
+    nav.links a:focus-visible::after { width: 100%; }
+
+    /* ---------- TITLE OVERLAY (black) ---------- */
+    .title {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s ease;
+    }
+    .title.hide { opacity: 0; pointer-events: none; }
+
+    .enter {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: min(72vmin, 560px);
+      position: relative;
+    }
+    .enter:focus { outline: none; }
+
+    /* static ring shown before click */
+    .ring-still {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: opacity 0.4s ease, transform 6s ease-in-out;
+      animation: breathe 7s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.035); }
+    }
+
+    /* the playing clip, hidden until click */
+    .ring-clip {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .enter.playing .ring-still { opacity: 0; }
+    .enter.playing .ring-clip { opacity: 1; }
+
+    .enter-hint {
+      margin-top: 26px;
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(13px, 2vw, 17px);
+      letter-spacing: 0.55em;
+      padding-left: 0.55em;
+      text-transform: uppercase;
+      color: rgba(250, 247, 239, 0.66);
+      transition: opacity 0.5s ease;
+      animation: pulse 3.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+    .enter.playing .enter-hint { opacity: 0; }
+
+    /* ---------- FOOTER (always present) ---------- */
+    .footer {
+      position: fixed;
+      left: 50%;
+      bottom: clamp(16px, 3vh, 30px);
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      gap: clamp(20px, 5vw, 46px);
+      font-size: clamp(12px, 1.7vw, 15px);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      transition: color 0.9s ease;
+    }
+    .footer a {
+      text-decoration: none;
+      color: var(--dove-dim);
+      transition: color 0.3s ease;
+      padding-left: 0.28em;
+    }
+    .footer a:hover, .footer a:focus-visible {
+      color: var(--dove);
+      outline: none;
+    }
+    /* while black title is up, footer sits on black — keep it soft white */
+    body.title-up .footer a { color: rgba(250, 247, 239, 0.55); }
+    body.title-up .footer a:hover { color: #fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring-still { animation: none; }
+      .enter-hint { animation: none; opacity: 0.7; }
+      .menu, .title { transition: opacity 0.3s ease; }
+    }
+  </style>
 </head>
+<body class="title-up">
 
-<body>
+  <!-- MENU (revealed after the animation) -->
+  <main class="menu" id="menu" aria-hidden="true">
+    <img class="emblem" src="emblem.png" alt="" />
+    <h1 class="wordmark">Your Dove Hands</h1>
+    <nav class="links">
+      <a href="live.html">Live</a>
+      <a href="demos.html">Demos</a>
+      <a href="paraphernalia.html">Paraphernalia</a>
+      <a href="moving-pictures.html">Moving Pictures</a>
+    </nav>
+  </main>
 
-    <a href="live.html" class="nav-button nav-left">Live</a>
-    <a href="demos.html" class="nav-button nav-right">Demos</a>
+  <!-- TITLE OVERLAY -->
+  <div class="title" id="title">
+    <button class="enter" id="enter" aria-label="Enter Your Dove Hands">
+      <img class="ring-still" src="poster.png" alt="Your Dove Hands — a ring of doves" />
+      <video class="ring-clip" id="clip" src="animation.mp4" muted playsinline preload="auto"></video>
+      <span class="enter-hint">enter</span>
+    </button>
+  </div>
 
-    <div class="footer">
-        <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
-        <a href="mailto:yourdovehands@gmail.com">Email</a>
-    </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">Email</a>
+  </footer>
+
+  <script>
+    (function () {
+      var title  = document.getElementById('title');
+      var enter  = document.getElementById('enter');
+      var clip   = document.getElementById('clip');
+      var menu   = document.getElementById('menu');
+      var body   = document.body;
+      var done   = false;
+
+      var reduce = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function revealMenu() {
+        if (done) return;
+        done = true;
+        title.classList.add('hide');
+        body.classList.remove('title-up');
+        menu.classList.add('revealed');
+        menu.setAttribute('aria-hidden', 'false');
+        setTimeout(function () { title.style.display = 'none'; }, 950);
+      }
+
+      function go() {
+        if (enter.classList.contains('playing')) return;
+
+        if (reduce) { revealMenu(); return; }
+
+        enter.classList.add('playing');
+        // hand off to the menu when the clip finishes
+        clip.addEventListener('ended', revealMenu, { once: true });
+        // safety net in case the clip can't play
+        var fallback = setTimeout(revealMenu, 1600);
+        clip.addEventListener('ended', function () { clearTimeout(fallback); }, { once: true });
+
+        var p = clip.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(function () { clearTimeout(fallback); revealMenu(); });
+        }
+      }
+
+      enter.addEventListener('click', go);
+    })();
+  </script>
 </body>
 </html>

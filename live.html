@@ -1,67 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live</title>
-    <style>
-        body {
-            background-color: #525151;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live — Your Dove Hands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --beige: #e6ddca;
+      --beige-deep: #ded4bd;
+      --dove: #faf7ef;
+      --dove-dim: rgba(250, 247, 239, 0.62);
+      --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--serif);
+      color: var(--dove);
+      background: radial-gradient(120% 90% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12vh 6vw;
+    }
+    .home {
+      position: fixed;
+      top: clamp(16px, 3vh, 26px);
+      left: clamp(18px, 4vw, 34px);
+      z-index: 10;
+      font-size: clamp(13px, 1.8vw, 16px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dove-dim);
+      padding-left: 0.32em;
+      transition: color 0.3s ease, letter-spacing 0.4s ease;
+    }
+    .home::before { content: "\2190"; margin-right: 0.7em; letter-spacing: 0; }
+    .home:hover, .home:focus-visible { color: var(--dove); letter-spacing: 0.38em; outline: none; }
 
-        .centered-text {
-            text-align: center;
-            font-size: 200px;
-            margin: 0;
-        }
-
-        .nav-button {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            padding: 8px 14px;
-            border: 2px solid #fff;
-            border-radius: 999px;
-            background: #ffffff;
-            color: #1f1f1f;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.35);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-        }
-
-        .nav-button:hover,
-        .nav-button:focus-visible {
-            background: #f2f2f2;
-            transform: translateY(-1px);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 10px 20px rgba(0, 0, 0, 0.4);
-            outline: none;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .footer a {
-            margin: 0 15px;
-            color: inherit;
-        }
-    </style>
+    .content { max-width: 760px; }
+    .page-title {
+      font-weight: 300;
+      font-size: clamp(30px, 6vw, 62px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin: 0 0 clamp(20px, 5vh, 40px);
+      padding-left: 0.3em;
+      text-shadow: 0 1px 0 rgba(60, 50, 38, 0.14);
+    }
+    .tba {
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(22px, 4.4vw, 40px);
+      letter-spacing: 0.12em;
+      color: var(--dove);
+      opacity: 0.9;
+      margin: 0;
+    }
+    .sub {
+      margin-top: 18px;
+      font-size: clamp(14px, 2.2vw, 19px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dove-dim);
+    }
+    .footer {
+      position: fixed;
+      left: 50%;
+      bottom: clamp(16px, 3vh, 30px);
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      gap: clamp(20px, 5vw, 46px);
+      font-size: clamp(12px, 1.7vw, 15px);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+    .footer a {
+      text-decoration: none;
+      color: var(--dove-dim);
+      padding-left: 0.28em;
+      transition: color 0.3s ease;
+    }
+    .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
+  </style>
 </head>
 <body>
-    <p class="centered-text">TBA</p>
+  <a href="index.html" class="home">Home</a>
 
-    <a href="index.html" class="nav-button">Home</a>
+  <div class="content">
+    <h1 class="page-title">Live</h1>
+    <p class="tba">No shows on the wing just yet.</p>
+    <p class="sub">Dates to be announced</p>
+  </div>
 
-    <div class="footer">
-        <a href="https://yourdovehands.bandcamp.com/" target="_blank">Bandcamp</a>
-        <a href="mailto:yourdovehands@gmail.com">Email</a>
-    </div>
+  <footer class="footer">
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">Email</a>
+  </footer>
 </body>
 </html>
