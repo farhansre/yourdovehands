@@ -6,103 +6,92 @@
   <title>Demos — Your Dove Hands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Shantell+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --beige: #e6ddca;
-      --beige-deep: #ded4bd;
-      --dove: #faf7ef;
-      --dove-dim: rgba(250, 247, 239, 0.62);
-      --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --beige: #d3c39f; --beige-deep: #c1af86;
+      --dove: #f7f1e2; --dove-dim: rgba(247, 241, 226, 0.6);
+      --soft: "Shantell Sans", "Comic Sans MS", cursive, sans-serif;
+      --hand: "Caveat", "Shantell Sans", cursive;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      margin: 0;
-      font-family: var(--serif);
-      color: var(--dove);
-      background: radial-gradient(120% 90% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
+      margin: 0; font-family: var(--soft); color: var(--dove);
+      background: radial-gradient(130% 100% at 48% 26%, var(--beige) 0%, var(--beige-deep) 100%);
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 13vh 5vw 12vh;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 14vh 5vw 12vh;
+    }
+    .grain {
+      position: fixed; inset: 0; z-index: 5; pointer-events: none;
+      opacity: 0.5; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
     }
     .home {
-      position: fixed;
-      top: clamp(16px, 3vh, 26px);
-      left: clamp(18px, 4vw, 34px);
-      z-index: 10;
-      font-size: clamp(13px, 1.8vw, 16px);
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--dove-dim);
-      padding-left: 0.32em;
-      transition: color 0.3s ease, letter-spacing 0.4s ease;
+      position: fixed; top: clamp(16px, 3vh, 26px); left: clamp(18px, 4vw, 34px); z-index: 10;
+      font-family: var(--hand); font-weight: 600; font-size: clamp(19px, 2.4vw, 24px);
+      text-decoration: none; color: var(--dove-dim); transform: rotate(-3deg);
+      transition: color 0.25s ease, transform 0.25s ease;
     }
-    .home::before { content: "\2190"; margin-right: 0.7em; letter-spacing: 0; }
-    .home:hover, .home:focus-visible { color: var(--dove); letter-spacing: 0.38em; outline: none; }
+    .home::before { content: "\2190 "; }
+    .home:hover, .home:focus-visible { color: var(--dove); transform: rotate(0deg); outline: none; }
 
     .page-title {
-      font-weight: 300;
-      font-size: clamp(26px, 5.2vw, 52px);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin: 0 0 clamp(18px, 4vh, 34px);
-      padding-left: 0.3em;
+      font-weight: 600; font-size: clamp(34px, 6.8vw, 66px); margin: 0 0 clamp(18px, 4vh, 34px);
+      transform: rotate(-2deg); text-align: center;
+      text-shadow: 1px 2px 0 rgba(47, 39, 24, 0.16); position: relative; z-index: 2;
+    }
+    .player {
+      position: relative; z-index: 2;
+      width: min(92vw, 600px);
+      padding: clamp(26px, 4vw, 40px) clamp(22px, 4vw, 40px) clamp(28px, 4vw, 38px);
+      border-radius: 4px;
+      background: rgba(247, 241, 226, 0.08);
+      border: 1.5px solid rgba(247, 241, 226, 0.3);
+      box-shadow: 3px 5px 0 rgba(47, 39, 24, 0.16);
+      transform: rotate(-1deg);
       text-align: center;
-      text-shadow: 0 1px 0 rgba(60, 50, 38, 0.14);
     }
-    .frame {
-      width: min(92vw, 900px);
-      aspect-ratio: 16 / 9;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 18px 50px rgba(44, 40, 33, 0.35);
-      border: 1px solid rgba(250, 247, 239, 0.35);
-      background: #000;
+    .track-title {
+      font-family: var(--hand); font-weight: 600;
+      font-size: clamp(30px, 5.6vw, 50px); letter-spacing: 0.01em; margin: 0 0 2px;
+      transform: rotate(0.8deg);
     }
-    .frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .track-meta {
+      font-size: clamp(13px, 2vw, 16px); color: var(--dove-dim);
+      margin: 0 0 clamp(18px, 3.5vh, 28px);
+    }
+    audio { width: 100%; display: block; filter: saturate(0) brightness(1.02); }
 
     .footer {
-      position: fixed;
-      left: 50%;
-      bottom: clamp(16px, 3vh, 30px);
-      transform: translateX(-50%);
-      z-index: 20;
-      display: flex;
-      gap: clamp(20px, 5vw, 46px);
-      font-size: clamp(12px, 1.7vw, 15px);
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
+      position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
+      transform: translateX(-50%) rotate(-1deg); z-index: 20;
+      display: flex; gap: clamp(20px, 5vw, 44px);
+      font-family: var(--hand); font-weight: 600; font-size: clamp(17px, 2.2vw, 22px);
     }
-    .footer a {
-      text-decoration: none;
-      color: var(--dove-dim);
-      padding-left: 0.28em;
-      transition: color 0.3s ease;
-    }
+    .footer a { text-decoration: none; color: var(--dove-dim); transition: color 0.25s ease; }
+    .footer a:nth-child(2) { transform: rotate(2deg); }
     .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
   </style>
 </head>
 <body>
-  <a href="index.html" class="home">Home</a>
+  <div class="grain"></div>
+  <a href="index.html" class="home">home</a>
 
   <h1 class="page-title">Demos</h1>
-  <div class="frame">
-    <iframe
-      src="https://www.youtube.com/embed/wJgu93zl3zY"
-      title="Your Dove Hands — demo"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen></iframe>
+  <div class="player">
+    <p class="track-title">Heart Shotgun</p>
+    <p class="track-meta">demo</p>
+    <audio controls preload="metadata">
+      <source src="heartshotgun.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
   </div>
 
   <footer class="footer">
-    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
-    <a href="mailto:yourdovehands@gmail.com">Email</a>
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">email</a>
   </footer>
 </body>
 </html>
