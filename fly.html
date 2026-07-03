@@ -117,18 +117,17 @@
     var score = 0, best = 0;
     try { best = parseInt(localStorage.getItem('ydh_fly_best') || '0', 10) || 0; } catch (e) {}
 
-    var bird, gravity, flapV, speed, gapH, spacing, obstacles, spawnX, doveScale;
+    var bird, gravity, flapV, speed, gapH, spacing, obstacles, doveScale;
 
     function reset() {
-      gravity = H * 0.0016;
-      flapV = -H * 0.011;
-      speed = W * 0.0075;
-      gapH = H * 0.30;
+      gravity = H * 0.00135;
+      flapV = -H * 0.017;      // stronger bounce per click
+      speed = W * 0.0072;
+      gapH = H * 0.33;
       spacing = W * 0.62;
-      doveScale = H * 0.085;         // dove height in px
+      doveScale = H * 0.085;
       bird = { x: W * 0.30, y: H * 0.45, v: 0, r: Math.min(W, H) * 0.045 };
       obstacles = [];
-      spawnX = W * 0.95;
       for (var i = 0; i < 3; i++) { addObstacle(W + i * spacing); }
       score = 0;
     }
@@ -166,7 +165,6 @@
         var o = obstacles[i];
         o.x -= speed;
         if (!o.passed && o.x + o.w < bird.x) { o.passed = true; score++; }
-        // collision: within column x-range and outside the gap
         if (bird.x + bird.r > o.x && bird.x - bird.r < o.x + o.w) {
           if (bird.y - bird.r < o.gapY || bird.y + bird.r > o.gapY + gapH) { gameOver(); }
         }
@@ -185,11 +183,9 @@
       ctx.textBaseline = 'middle';
       var cx = o.x + o.w / 2;
       var step = size * 0.86;
-      // top run (reaching down into the gap)
       for (var y = o.gapY - size * 0.45; y > -size; y -= step) {
         ctx.globalAlpha = 0.92; ctx.fillText(o.hand, cx, y);
       }
-      // bottom run
       for (var y2 = o.gapY + gapH + size * 0.45; y2 < H + size; y2 += step) {
         ctx.globalAlpha = 0.92; ctx.fillText(o.hand, cx, y2);
       }
@@ -214,7 +210,6 @@
 
     function render() {
       ctx.clearRect(0, 0, W, H);
-      // sky
       var g = ctx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, '#cbb98f'); g.addColorStop(1, '#b7a473');
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -234,7 +229,6 @@
 
     function loop() { update(); render(); requestAnimationFrame(loop); }
 
-    // input
     function onTap(e) { if (e) e.preventDefault(); flap(); }
     stage.addEventListener('pointerdown', onTap);
     window.addEventListener('keydown', function (e) {
