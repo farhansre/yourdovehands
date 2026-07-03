@@ -9,10 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --beige: #d3c39f;
-      --beige-deep: #c5b590;
+      --beige: #c7b489;
+      --beige-deep: #b7a473;
       --dove: #f7f1e2;
-      --dove-dim: rgba(247, 241, 226, 0.6);
+      --dove-dim: rgba(247, 241, 226, 0.65);
       --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
@@ -43,7 +43,6 @@
       opacity: 0;
       transition: opacity 1s ease 0.1s;
     }
-    /* faded band collage as a whisper of texture (nothing shows until the file exists) */
     .menu::before {
       content: "";
       position: absolute;
@@ -55,6 +54,20 @@
       pointer-events: none;
     }
     .menu.revealed { opacity: 1; }
+
+    .to-title {
+      position: fixed;
+      top: clamp(16px, 3vh, 26px);
+      left: clamp(18px, 4vw, 34px);
+      z-index: 6;
+      font-size: clamp(13px, 1.7vw, 15px);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dove-dim);
+      transition: color 0.2s ease;
+    }
+    .to-title:hover, .to-title:focus-visible { color: var(--dove); outline: none; }
 
     .emblem {
       width: clamp(66px, 9.5vw, 104px);
@@ -79,7 +92,6 @@
       50% { transform: translateY(-12px); }
     }
 
-    /* handwritten logo as the wordmark; white background drops out via multiply */
     .wordmark-img {
       width: clamp(220px, 46vw, 500px);
       height: auto;
@@ -108,7 +120,7 @@
       letter-spacing: 0.01em;
       text-decoration: none;
       color: var(--dove);
-      opacity: 0.88;
+      opacity: 0.9;
       padding: 2px 4px;
       transition: opacity 0.2s ease;
     }
@@ -156,7 +168,6 @@
 
     .enter-hint {
       margin-top: 22px;
-      font-family: var(--sans);
       font-weight: 400;
       font-size: clamp(13px, 1.7vw, 15px);
       letter-spacing: 0.42em;
@@ -196,6 +207,7 @@
 
   <!-- MENU -->
   <main class="menu" id="menu" aria-hidden="true">
+    <a href="index.html" class="to-title">Title</a>
     <img class="emblem" src="emblem.png" alt="" />
     <img class="menu-dove" src="dove.png" alt="" />
     <img class="wordmark-img" src="logo-handwritten.png" alt="Your Dove Hands"
@@ -206,6 +218,7 @@
       <a href="demos.html">Demos</a>
       <a href="paraphernalia.html">Paraphernalia</a>
       <a href="moving-pictures.html">Moving Pictures</a>
+      <a href="fly.html">Fly</a>
     </nav>
   </main>
 
@@ -235,29 +248,37 @@
       var reduce = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      function revealMenu() {
+      function showMenu(instant) {
         if (done) return;
         done = true;
-        title.classList.add('hide');
         body.classList.remove('title-up');
         menu.classList.add('revealed');
         menu.setAttribute('aria-hidden', 'false');
-        setTimeout(function () { title.style.display = 'none'; }, 950);
+        if (instant) {
+          title.style.display = 'none';
+        } else {
+          title.classList.add('hide');
+          setTimeout(function () { title.style.display = 'none'; }, 950);
+        }
       }
       function go() {
         if (enter.classList.contains('playing')) return;
-        if (reduce) { revealMenu(); return; }
+        if (reduce) { showMenu(false); return; }
         enter.classList.add('playing');
-        clip.addEventListener('ended', revealMenu, { once: true });
-        var fallback = setTimeout(revealMenu, 1600);
+        clip.addEventListener('ended', function () { showMenu(false); }, { once: true });
+        var fallback = setTimeout(function () { showMenu(false); }, 1600);
         clip.addEventListener('ended', function () { clearTimeout(fallback); }, { once: true });
         var p = clip.play();
         if (p && typeof p.catch === 'function') {
-          p.catch(function () { clearTimeout(fallback); revealMenu(); });
+          p.catch(function () { clearTimeout(fallback); showMenu(false); });
         }
       }
       enter.addEventListener('click', go);
+
+      // Arriving from a "Home" link lands straight on the menu, skipping the title screen.
+      if (location.hash === '#menu') { showMenu(true); }
     })();
   </script>
+  <script src="dovetrail.js" defer></script>
 </body>
 </html>

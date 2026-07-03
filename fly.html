@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Fly — Your Dove Hands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --beige: #c7b489; --beige-deep: #b7a473;
+      --dove: #f7f1e2; --dove-dim: rgba(247, 241, 226, 0.65);
+      --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: var(--sans); color: var(--dove);
+      background: radial-gradient(130% 100% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 12vh 4vw 11vh;
+      overflow: hidden; touch-action: manipulation;
+    }
+    .home {
+      position: fixed; top: clamp(16px, 3vh, 26px); left: clamp(18px, 4vw, 34px); z-index: 10;
+      font-size: clamp(13px, 1.7vw, 15px); letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; color: var(--dove-dim); transition: color 0.2s ease;
+    }
+    .home::before { content: "\2190\00a0\00a0"; }
+    .home:hover, .home:focus-visible { color: var(--dove); outline: none; }
+
+    .stage {
+      position: relative;
+      width: min(92vw, 400px);
+      aspect-ratio: 400 / 560;
+      max-height: 74vh;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(247, 241, 226, 0.28);
+      box-shadow: 0 14px 34px rgba(38, 31, 18, 0.3);
+      cursor: pointer;
+      user-select: none;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+
+    .overlay {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8% 10%;
+      background: rgba(30, 24, 13, 0.32);
+      backdrop-filter: blur(1px);
+      transition: opacity 0.25s ease;
+    }
+    .overlay.hidden { opacity: 0; pointer-events: none; }
+    .overlay h2 {
+      margin: 0 0 8px; font-weight: 500; letter-spacing: 0.04em;
+      font-size: clamp(28px, 8vw, 44px);
+    }
+    .overlay p { margin: 4px 0; font-weight: 300; font-size: clamp(14px, 3.6vw, 18px); }
+    .overlay .big { font-weight: 500; font-size: clamp(20px, 5vw, 26px); letter-spacing: 0.02em; }
+    .overlay .hint { margin-top: 14px; color: var(--dove-dim); letter-spacing: 0.06em; }
+
+    .footer {
+      position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
+      transform: translateX(-50%); z-index: 20;
+      display: flex; gap: clamp(20px, 5vw, 44px);
+      font-size: clamp(13px, 1.7vw, 15px); letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .footer a { text-decoration: none; color: var(--dove-dim); transition: color 0.2s ease; }
+    .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
+  </style>
+</head>
+<body>
+  <a href="index.html#menu" class="home">Home</a>
+
+  <div class="stage" id="stage">
+    <canvas id="game"></canvas>
+    <div class="overlay" id="overlay">
+      <h2>Fly</h2>
+      <p>Guide the dove through the hands.</p>
+      <p class="hint">Click, tap, or press Space</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">Email</a>
+  </footer>
+
+  <script>
+  (function () {
+    var cv = document.getElementById('game');
+    var ctx = cv.getContext('2d');
+    var stage = document.getElementById('stage');
+    var overlay = document.getElementById('overlay');
+
+    var W = 400, H = 560, dpr = 1;
+    function fit() {
+      var r = cv.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    var dove = new Image();
+    var doveReady = false;
+    dove.onload = function () { doveReady = true; };
+    dove.src = 'dove.png';
+
+    var HANDS = ['✋', '🤚'];   // open palm + raised back-of-hand
+
+    var state = 'start';       // start | play | over
+    var score = 0, best = 0;
+    try { best = parseInt(localStorage.getItem('ydh_fly_best') || '0', 10) || 0; } catch (e) {}
+
+    var bird, gravity, flapV, speed, gapH, spacing, obstacles, spawnX, doveScale;
+
+    function reset() {
+      gravity = H * 0.0016;
+      flapV = -H * 0.011;
+      speed = W * 0.0075;
+      gapH = H * 0.30;
+      spacing = W * 0.62;
+      doveScale = H * 0.085;         // dove height in px
+      bird = { x: W * 0.30, y: H * 0.45, v: 0, r: Math.min(W, H) * 0.045 };
+      obstacles = [];
+      spawnX = W * 0.95;
+      for (var i = 0; i < 3; i++) { addObstacle(W + i * spacing); }
+      score = 0;
+    }
+
+    function addObstacle(x) {
+      var margin = H * 0.12;
+      var gapY = margin + Math.random() * (H - gapH - margin * 2);
+      obstacles.push({ x: x, gapY: gapY, w: W * 0.16, passed: false,
+                       hand: HANDS[(Math.random() * HANDS.length) | 0] });
+    }
+
+    function flap() {
+      if (state === 'start') { state = 'play'; overlay.classList.add('hidden'); }
+      else if (state === 'over') { reset(); state = 'play'; overlay.classList.add('hidden'); }
+      if (state === 'play') { bird.v = flapV; }
+    }
+
+    function gameOver() {
+      state = 'over';
+      if (score > best) { best = score; try { localStorage.setItem('ydh_fly_best', String(best)); } catch (e) {} }
+      overlay.innerHTML =
+        '<h2>Grounded</h2>' +
+        '<p class="big">Score ' + score + '</p>' +
+        '<p>Best ' + best + '</p>' +
+        '<p class="hint">Click to fly again</p>';
+      overlay.classList.remove('hidden');
+    }
+
+    function update() {
+      if (state !== 'play') return;
+      bird.v += gravity;
+      bird.y += bird.v;
+
+      for (var i = 0; i < obstacles.length; i++) {
+        var o = obstacles[i];
+        o.x -= speed;
+        if (!o.passed && o.x + o.w < bird.x) { o.passed = true; score++; }
+        // collision: within column x-range and outside the gap
+        if (bird.x + bird.r > o.x && bird.x - bird.r < o.x + o.w) {
+          if (bird.y - bird.r < o.gapY || bird.y + bird.r > o.gapY + gapH) { gameOver(); }
+        }
+      }
+      if (obstacles.length && obstacles[0].x + obstacles[0].w < 0) { obstacles.shift(); }
+      var last = obstacles[obstacles.length - 1];
+      if (last && last.x < W - spacing) { addObstacle(last.x + spacing); }
+
+      if (bird.y + bird.r > H || bird.y - bird.r < 0) { gameOver(); }
+    }
+
+    function drawHandColumn(o) {
+      var size = o.w * 1.15;
+      ctx.font = size + 'px "Rubik", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      var cx = o.x + o.w / 2;
+      var step = size * 0.86;
+      // top run (reaching down into the gap)
+      for (var y = o.gapY - size * 0.45; y > -size; y -= step) {
+        ctx.globalAlpha = 0.92; ctx.fillText(o.hand, cx, y);
+      }
+      // bottom run
+      for (var y2 = o.gapY + gapH + size * 0.45; y2 < H + size; y2 += step) {
+        ctx.globalAlpha = 0.92; ctx.fillText(o.hand, cx, y2);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawDove() {
+      var h = doveScale;
+      var w = doveReady ? h * (dove.width / dove.height) : h * 0.7;
+      var ang = Math.max(-0.5, Math.min(0.9, bird.v * 0.05));
+      ctx.save();
+      ctx.translate(bird.x, bird.y);
+      ctx.rotate(ang);
+      if (doveReady) {
+        ctx.drawImage(dove, -w / 2, -h / 2, w, h);
+      } else {
+        ctx.fillStyle = '#f7f1e2';
+        ctx.beginPath(); ctx.arc(0, 0, bird.r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+      // sky
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#cbb98f'); g.addColorStop(1, '#b7a473');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      for (var i = 0; i < obstacles.length; i++) { drawHandColumn(obstacles[i]); }
+      drawDove();
+
+      if (state === 'play') {
+        ctx.fillStyle = 'rgba(247,241,226,0.95)';
+        ctx.font = '500 ' + (H * 0.075) + 'px "Rubik", sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.shadowColor = 'rgba(40,32,16,0.35)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+        ctx.fillText(String(score), W / 2, H * 0.05);
+        ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      }
+    }
+
+    function loop() { update(); render(); requestAnimationFrame(loop); }
+
+    // input
+    function onTap(e) { if (e) e.preventDefault(); flap(); }
+    stage.addEventListener('pointerdown', onTap);
+    window.addEventListener('keydown', function (e) {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') { e.preventDefault(); flap(); }
+    });
+    window.addEventListener('resize', function () { fit(); });
+
+    fit(); reset(); loop();
+  })();
+  </script>
+</body>
+</html>

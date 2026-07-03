@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --beige: #d3c39f; --beige-deep: #c5b590;
-      --dove: #f7f1e2; --dove-dim: rgba(247, 241, 226, 0.6);
+      --beige: #c7b489; --beige-deep: #b7a473;
+      --dove: #f7f1e2; --dove-dim: rgba(247, 241, 226, 0.65);
       --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
@@ -39,14 +39,11 @@
       display: block; width: min(70vw, 300px); height: auto;
       margin: 0 auto clamp(20px, 4vh, 32px); border-radius: 2px;
       border: 5px solid #f7f1e2; background: #000;
-      box-shadow: 0 10px 26px rgba(47, 39, 24, 0.22);
-    }
-    .tba {
-      font-weight: 300; font-size: clamp(20px, 3.6vw, 30px); letter-spacing: 0.01em; margin: 0;
+      box-shadow: 0 10px 26px rgba(38, 31, 18, 0.28);
     }
     .sub {
-      margin-top: 12px; font-size: clamp(13px, 2vw, 16px);
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--dove-dim);
+      font-size: clamp(14px, 2.1vw, 17px);
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--dove-dim); margin: 0;
     }
     .footer {
       position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
@@ -59,12 +56,11 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="home">Home</a>
+  <a href="index.html#menu" class="home">Home</a>
 
   <div class="content">
     <h1 class="page-title">Live</h1>
     <img class="photo" src="dove-hands-photo.jpg" alt="" onerror="this.style.display='none';" />
-    <p class="tba">No shows on the wing just yet.</p>
     <p class="sub">Dates to be announced</p>
   </div>
 
@@ -72,5 +68,7 @@
     <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
     <a href="mailto:yourdovehands@gmail.com">Email</a>
   </footer>
+
+  <script src="dovetrail.js" defer></script>
 </body>
 </html>
