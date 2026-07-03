@@ -6,82 +6,71 @@
   <title>Live — Your Dove Hands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Shantell+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --beige: #d3c39f; --beige-deep: #c1af86;
+      --beige: #d3c39f; --beige-deep: #c5b590;
       --dove: #f7f1e2; --dove-dim: rgba(247, 241, 226, 0.6);
-      --soft: "Shantell Sans", "Comic Sans MS", cursive, sans-serif;
-      --hand: "Caveat", "Shantell Sans", cursive;
+      --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      margin: 0; font-family: var(--soft); color: var(--dove);
-      background: radial-gradient(130% 100% at 48% 26%, var(--beige) 0%, var(--beige-deep) 100%);
+      margin: 0; font-family: var(--sans); font-weight: 400; color: var(--dove);
+      background: radial-gradient(130% 100% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       text-align: center; padding: 13vh 6vw;
     }
-    .grain {
-      position: fixed; inset: 0; z-index: 5; pointer-events: none;
-      opacity: 0.5; mix-blend-mode: multiply;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
-    }
     .home {
       position: fixed; top: clamp(16px, 3vh, 26px); left: clamp(18px, 4vw, 34px); z-index: 10;
-      font-family: var(--hand); font-weight: 600; font-size: clamp(19px, 2.4vw, 24px);
-      text-decoration: none; color: var(--dove-dim); transform: rotate(-3deg);
-      transition: color 0.25s ease, transform 0.25s ease;
+      font-size: clamp(13px, 1.7vw, 15px); letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; color: var(--dove-dim); transition: color 0.2s ease;
     }
-    .home::before { content: "\2190 "; }
-    .home:hover, .home:focus-visible { color: var(--dove); transform: rotate(0deg); outline: none; }
+    .home::before { content: "\2190\00a0\00a0"; }
+    .home:hover, .home:focus-visible { color: var(--dove); outline: none; }
 
-    .content { max-width: 760px; position: relative; z-index: 2; }
+    .content { max-width: 760px; }
+    .page-title {
+      font-weight: 500; font-size: clamp(30px, 6vw, 60px); letter-spacing: 0.02em;
+      margin: 0 0 clamp(18px, 4vh, 34px); line-height: 1.05;
+    }
     .photo {
       display: block; width: min(70vw, 300px); height: auto;
-      margin: clamp(14px, 3vh, 26px) auto; border-radius: 3px;
+      margin: 0 auto clamp(20px, 4vh, 32px); border-radius: 2px;
       border: 5px solid #f7f1e2; background: #000;
-      box-shadow: 4px 6px 0 rgba(47, 39, 24, 0.22);
-      transform: rotate(-2.5deg);
-    }
-    .page-title {
-      font-weight: 600; font-size: clamp(38px, 8vw, 78px); margin: 0 0 clamp(16px, 4vh, 32px);
-      transform: rotate(-2deg); text-shadow: 1px 2px 0 rgba(47, 39, 24, 0.16); line-height: 0.95;
+      box-shadow: 0 10px 26px rgba(47, 39, 24, 0.22);
     }
     .tba {
-      font-family: var(--hand); font-weight: 500;
-      font-size: clamp(26px, 5vw, 46px); margin: 0; transform: rotate(1deg); opacity: 0.95;
+      font-weight: 300; font-size: clamp(20px, 3.6vw, 30px); letter-spacing: 0.01em; margin: 0;
     }
     .sub {
-      margin-top: 14px; font-size: clamp(14px, 2.1vw, 18px);
-      color: var(--dove-dim); transform: rotate(-1deg);
+      margin-top: 12px; font-size: clamp(13px, 2vw, 16px);
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--dove-dim);
     }
     .footer {
       position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
-      transform: translateX(-50%) rotate(-1deg); z-index: 20;
+      transform: translateX(-50%); z-index: 20;
       display: flex; gap: clamp(20px, 5vw, 44px);
-      font-family: var(--hand); font-weight: 600; font-size: clamp(17px, 2.2vw, 22px);
+      font-size: clamp(13px, 1.7vw, 15px); letter-spacing: 0.16em; text-transform: uppercase;
     }
-    .footer a { text-decoration: none; color: var(--dove-dim); transition: color 0.25s ease; }
-    .footer a:nth-child(2) { transform: rotate(2deg); }
+    .footer a { text-decoration: none; color: var(--dove-dim); transition: color 0.2s ease; }
     .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
   </style>
 </head>
 <body>
-  <div class="grain"></div>
-  <a href="index.html" class="home">home</a>
+  <a href="index.html" class="home">Home</a>
 
   <div class="content">
     <h1 class="page-title">Live</h1>
     <img class="photo" src="dove-hands-photo.jpg" alt="" onerror="this.style.display='none';" />
-    <p class="tba">no shows on the wing just yet</p>
-    <p class="sub">dates to be announced</p>
+    <p class="tba">No shows on the wing just yet.</p>
+    <p class="sub">Dates to be announced</p>
   </div>
 
   <footer class="footer">
-    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">bandcamp</a>
-    <a href="mailto:yourdovehands@gmail.com">email</a>
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">Email</a>
   </footer>
 </body>
 </html>

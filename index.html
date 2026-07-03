@@ -6,39 +6,25 @@
   <title>Your Dove Hands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Shantell+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --beige: #d3c39f;
-      --beige-deep: #c1af86;
-      --dove: #f7f1e2;          /* soft white */
+      --beige-deep: #c5b590;
+      --dove: #f7f1e2;
       --dove-dim: rgba(247, 241, 226, 0.6);
-      --ink: #2f2718;
-      --soft: "Shantell Sans", "Comic Sans MS", cursive, sans-serif;
-      --hand: "Caveat", "Shantell Sans", cursive;
+      --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-
     * { box-sizing: border-box; }
     html, body { height: 100%; }
-
     body {
       margin: 0;
       background-color: var(--beige);
       color: var(--dove);
-      font-family: var(--soft);
+      font-family: var(--sans);
+      font-weight: 400;
       -webkit-font-smoothing: antialiased;
       overflow: hidden;
-    }
-
-    /* speckled paper grain so nothing looks too clean */
-    .grain {
-      position: fixed;
-      inset: 0;
-      z-index: 5;
-      pointer-events: none;
-      opacity: 0.5;
-      mix-blend-mode: multiply;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
     }
 
     /* ---------- MENU (beige) ---------- */
@@ -53,116 +39,92 @@
       justify-content: center;
       text-align: center;
       padding: 7vh 6vw 15vh;
-      background: radial-gradient(130% 100% at 48% 26%, var(--beige) 0%, var(--beige-deep) 100%);
+      background: radial-gradient(130% 100% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
       opacity: 0;
-      transition: opacity 1.1s ease 0.15s;
+      transition: opacity 1s ease 0.1s;
     }
-    /* faded band collage as paper texture behind the menu (shows nothing if the file isn't there yet) */
+    /* faded band collage as a whisper of texture (nothing shows until the file exists) */
     .menu::before {
       content: "";
       position: absolute;
       inset: 0;
       z-index: -1;
       background: url("poster-collage.jpg") center / cover no-repeat;
-      opacity: 0.12;
+      opacity: 0.1;
       mix-blend-mode: multiply;
       pointer-events: none;
     }
     .menu.revealed { opacity: 1; }
 
-    /* handwritten logo used as the wordmark; white background drops out via multiply */
-    .wordmark-img {
-      width: clamp(230px, 48vw, 540px);
-      height: auto;
-      margin: 0 0 clamp(20px, 4.5vh, 46px);
-      mix-blend-mode: multiply;
-      transform: rotate(-2deg);
-      filter: contrast(1.06);
-      user-select: none;
-    }
-
     .emblem {
-      width: clamp(74px, 11vw, 122px);
+      width: clamp(66px, 9.5vw, 104px);
       height: auto;
-      margin-bottom: clamp(10px, 2.4vh, 24px);
+      margin-bottom: clamp(12px, 2.6vh, 26px);
       opacity: 0.9;
-      transform: rotate(-4deg);
-      filter: drop-shadow(0 3px 5px rgba(47, 39, 24, 0.18));
       user-select: none;
       pointer-events: none;
     }
-
-    .wordmark {
-      margin: 0 0 clamp(24px, 5vh, 50px);
-      font-family: var(--soft);
-      font-weight: 600;
-      font-size: clamp(34px, 7vw, 68px);
-      letter-spacing: 0.01em;
-      color: var(--dove);
-      text-shadow: 1px 2px 0 rgba(47, 39, 24, 0.16);
-      line-height: 0.98;
-      transform: rotate(-2.2deg);
-    }
-    .wordmark .l2 { display: block; margin-left: 0.5em; transform: rotate(1.4deg); }
 
     .menu-dove {
       position: absolute;
-      width: clamp(84px, 13vw, 168px);
-      left: clamp(12px, 5vw, 72px);
-      bottom: clamp(56px, 12vh, 128px);
-      opacity: 0.55;
-      transform: rotate(-8deg);
+      width: clamp(72px, 11vw, 140px);
+      left: clamp(14px, 6vw, 84px);
+      bottom: clamp(64px, 13vh, 140px);
+      opacity: 0.5;
       pointer-events: none;
-      filter: drop-shadow(0 4px 8px rgba(47, 39, 24, 0.2));
-      animation: drift 9s ease-in-out infinite;
+      animation: float 8s ease-in-out infinite;
     }
-    @keyframes drift {
-      0%, 100% { transform: translateY(0) rotate(-8deg); }
-      50% { transform: translateY(-14px) rotate(-4deg); }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* handwritten logo as the wordmark; white background drops out via multiply */
+    .wordmark-img {
+      width: clamp(220px, 46vw, 500px);
+      height: auto;
+      margin: 0 0 clamp(22px, 5vh, 48px);
+      mix-blend-mode: multiply;
+      user-select: none;
+    }
+    .wordmark {
+      margin: 0 0 clamp(22px, 5vh, 48px);
+      font-weight: 500;
+      font-size: clamp(30px, 6vw, 58px);
+      letter-spacing: 0.02em;
+      color: var(--dove);
+      line-height: 1.05;
     }
 
     nav.links {
       display: flex;
       flex-direction: column;
-      gap: clamp(6px, 1.8vh, 16px);
+      gap: clamp(8px, 1.9vh, 18px);
       align-items: center;
     }
-
     nav.links a {
-      font-family: var(--soft);
-      font-size: clamp(22px, 3.6vw, 35px);
-      font-weight: 500;
+      font-size: clamp(19px, 2.9vw, 27px);
+      font-weight: 400;
+      letter-spacing: 0.01em;
       text-decoration: none;
       color: var(--dove);
-      text-shadow: 1px 1px 0 rgba(47, 39, 24, 0.14);
-      padding: 2px 8px;
-      transition: color 0.25s ease, transform 0.25s ease;
+      opacity: 0.88;
+      padding: 2px 4px;
+      transition: opacity 0.2s ease;
     }
-    nav.links a:nth-child(1) { transform: rotate(-1.6deg); }
-    nav.links a:nth-child(2) { transform: rotate(1.3deg); }
-    nav.links a:nth-child(3) { transform: rotate(-0.8deg); }
-    nav.links a:nth-child(4) { transform: rotate(1.8deg); }
-
     nav.links a:hover,
     nav.links a:focus-visible {
-      color: #fffdf5;
+      opacity: 1;
       text-decoration: underline;
-      text-decoration-style: wavy;
-      text-decoration-thickness: 1.5px;
       text-underline-offset: 5px;
-      transform: rotate(0deg) scale(1.04);
+      text-decoration-thickness: 1px;
       outline: none;
     }
 
     /* ---------- TITLE OVERLAY (black) ---------- */
     .title {
-      position: fixed;
-      inset: 0;
-      z-index: 10;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; inset: 0; z-index: 10; background: #000;
+      display: flex; align-items: center; justify-content: center;
       transition: opacity 0.9s ease;
     }
     .title.hide { opacity: 0; pointer-events: none; }
@@ -172,8 +134,7 @@
       border: 0; background: transparent; padding: 0; margin: 0;
       cursor: pointer;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: min(72vmin, 560px);
-      position: relative;
+      width: min(72vmin, 560px); position: relative;
     }
     .enter:focus { outline: none; }
 
@@ -183,65 +144,55 @@
       animation: breathe 7s ease-in-out infinite;
     }
     @keyframes breathe {
-      0%, 100% { transform: scale(1) rotate(-1deg); }
-      50% { transform: scale(1.035) rotate(1deg); }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
     }
-
     .ring-clip {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: contain;
-      opacity: 0; transition: opacity 0.25s ease;
-      pointer-events: none;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: contain; opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
     }
     .enter.playing .ring-still { opacity: 0; }
     .enter.playing .ring-clip { opacity: 1; }
 
     .enter-hint {
-      margin-top: 20px;
-      font-family: var(--hand);
-      font-weight: 600;
-      font-size: clamp(22px, 3.4vw, 34px);
-      letter-spacing: 0.02em;
-      color: rgba(247, 241, 226, 0.72);
-      transform: rotate(-3deg);
+      margin-top: 22px;
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: clamp(13px, 1.7vw, 15px);
+      letter-spacing: 0.42em;
+      padding-left: 0.42em;
+      text-transform: uppercase;
+      color: rgba(247, 241, 226, 0.62);
       transition: opacity 0.5s ease;
       animation: pulse 3.2s ease-in-out infinite;
     }
-    @keyframes pulse { 0%,100% { opacity: 0.45; } 50% { opacity: 0.9; } }
+    @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
     .enter.playing .enter-hint { opacity: 0; }
 
-    /* ---------- FOOTER (always present) ---------- */
+    /* ---------- FOOTER ---------- */
     .footer {
-      position: fixed;
-      left: 50%; bottom: clamp(16px, 3vh, 30px);
-      transform: translateX(-50%) rotate(-1deg);
-      z-index: 20;
+      position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
+      transform: translateX(-50%); z-index: 20;
       display: flex; gap: clamp(20px, 5vw, 44px);
-      font-family: var(--hand);
-      font-weight: 600;
-      font-size: clamp(17px, 2.2vw, 22px);
+      font-size: clamp(13px, 1.7vw, 15px);
+      letter-spacing: 0.16em; text-transform: uppercase;
     }
     .footer a {
-      text-decoration: none;
-      color: var(--dove-dim);
-      transition: color 0.25s ease, transform 0.25s ease;
+      text-decoration: none; color: var(--dove-dim);
+      transition: color 0.2s ease; padding-left: 0.16em;
     }
-    .footer a:nth-child(2) { transform: rotate(2deg); }
     .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
-    body.title-up .footer a { color: rgba(247, 241, 226, 0.55); }
+    body.title-up .footer a { color: rgba(247, 241, 226, 0.5); }
     body.title-up .footer a:hover { color: #fff; }
 
     @media (prefers-reduced-motion: reduce) {
-      .ring-still { animation: none; }
-      .enter-hint { animation: none; opacity: 0.75; }
+      .ring-still, .menu-dove { animation: none; }
+      .enter-hint { animation: none; opacity: 0.7; }
       .menu, .title { transition: opacity 0.3s ease; }
     }
   </style>
 </head>
 <body class="title-up">
-
-  <div class="grain"></div>
 
   <!-- MENU -->
   <main class="menu" id="menu" aria-hidden="true">
@@ -249,7 +200,7 @@
     <img class="menu-dove" src="dove.png" alt="" />
     <img class="wordmark-img" src="logo-handwritten.png" alt="Your Dove Hands"
          onerror="this.style.display='none';var t=document.getElementById('wordmark-text');if(t){t.style.display='block';}" />
-    <h1 class="wordmark" id="wordmark-text" style="display:none">Your Dove<span class="l2">Hands</span></h1>
+    <h1 class="wordmark" id="wordmark-text" style="display:none">Your Dove Hands</h1>
     <nav class="links">
       <a href="live.html">Live</a>
       <a href="demos.html">Demos</a>
@@ -263,14 +214,14 @@
     <button class="enter" id="enter" aria-label="Enter Your Dove Hands">
       <img class="ring-still" src="poster.png" alt="Your Dove Hands — a ring of doves" />
       <video class="ring-clip" id="clip" src="animation.mp4" muted playsinline preload="auto"></video>
-      <span class="enter-hint">come in</span>
+      <span class="enter-hint">enter</span>
     </button>
   </div>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">bandcamp</a>
-    <a href="mailto:yourdovehands@gmail.com">email</a>
+    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
+    <a href="mailto:yourdovehands@gmail.com">Email</a>
   </footer>
 
   <script>
