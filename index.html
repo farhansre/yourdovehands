@@ -27,7 +27,6 @@
       overflow: hidden;
     }
 
-    /* ---------- MENU (beige) ---------- */
     .menu {
       position: fixed;
       inset: 0;
@@ -133,7 +132,6 @@
       outline: none;
     }
 
-    /* ---------- TITLE OVERLAY (black) ---------- */
     .title {
       position: fixed; inset: 0; z-index: 10; background: #000;
       display: flex; align-items: center; justify-content: center;
@@ -180,7 +178,6 @@
     @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
     .enter.playing .enter-hint { opacity: 0; }
 
-    /* ---------- FOOTER ---------- */
     .footer {
       position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
       transform: translateX(-50%); z-index: 20;
@@ -205,7 +202,6 @@
 </head>
 <body class="title-up">
 
-  <!-- MENU -->
   <main class="menu" id="menu" aria-hidden="true">
     <a href="index.html" class="to-title">Title</a>
     <img class="emblem" src="emblem.png" alt="" />
@@ -222,7 +218,6 @@
     </nav>
   </main>
 
-  <!-- TITLE OVERLAY -->
   <div class="title" id="title">
     <button class="enter" id="enter" aria-label="Enter Your Dove Hands">
       <img class="ring-still" src="poster.png" alt="Your Dove Hands — a ring of doves" />
@@ -231,7 +226,6 @@
     </button>
   </div>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
     <a href="mailto:yourdovehands@gmail.com">Email</a>
@@ -275,7 +269,6 @@
       }
       enter.addEventListener('click', go);
 
-      // Arriving from a "Home" link lands straight on the menu, skipping the title screen.
       if (location.hash === '#menu') { showMenu(true); }
     })();
   </script>

@@ -1,4 +1,4 @@
-/* Your Dove Hands — tiny doves that trail the cursor and drift away. */
+/* Your Dove Hands — a rare little dove that drifts off as you move around. */
 (function () {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
