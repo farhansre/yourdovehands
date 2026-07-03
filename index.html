@@ -47,7 +47,7 @@
       position: absolute;
       inset: 0;
       z-index: -1;
-      background: url("poster-collage.jpg") center / cover no-repeat;
+      background: url("poster-collage.jpeg") center / cover no-repeat;
       opacity: 0.1;
       mix-blend-mode: multiply;
       pointer-events: none;
@@ -68,21 +68,11 @@
     }
     .to-title:hover, .to-title:focus-visible { color: var(--dove); outline: none; }
 
-    .emblem {
-      width: clamp(66px, 9.5vw, 104px);
-      height: auto;
-      margin-bottom: clamp(12px, 2.6vh, 26px);
-      opacity: 0.9;
-      user-select: none;
-      pointer-events: none;
-    }
-
     .menu-dove {
-      position: absolute;
-      width: clamp(72px, 11vw, 140px);
-      left: clamp(14px, 6vw, 84px);
-      bottom: clamp(64px, 13vh, 140px);
-      opacity: 0.5;
+      height: clamp(120px, 20vh, 210px);
+      width: auto;
+      margin-bottom: clamp(6px, 1.6vh, 18px);
+      opacity: 0.95;
       pointer-events: none;
       animation: float 8s ease-in-out infinite;
     }
@@ -92,9 +82,9 @@
     }
 
     .wordmark-img {
-      width: clamp(220px, 46vw, 500px);
+      width: clamp(260px, 58vw, 620px);
       height: auto;
-      margin: 0 0 clamp(22px, 5vh, 48px);
+      margin: 0 0 clamp(26px, 5vh, 52px);
       mix-blend-mode: multiply;
       user-select: none;
     }
@@ -204,7 +194,6 @@
 
   <main class="menu" id="menu" aria-hidden="true">
     <a href="index.html" class="to-title">Title</a>
-    <img class="emblem" src="emblem.png" alt="" />
     <img class="menu-dove" src="dove.png" alt="" />
     <img class="wordmark-img" src="logo-handwritten.png" alt="Your Dove Hands"
          onerror="this.style.display='none';var t=document.getElementById('wordmark-text');if(t){t.style.display='block';}" />
