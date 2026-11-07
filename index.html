@@ -1,268 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Dove Hands</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --beige: #c7b489;
-      --beige-deep: #b7a473;
-      --dove: #f7f1e2;
-      --dove-dim: rgba(247, 241, 226, 0.65);
-      --sans: "Rubik", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background-color: var(--beige);
-      color: var(--dove);
-      font-family: var(--sans);
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-    }
-
-    .menu {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      isolation: isolate;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 7vh 6vw 15vh;
-      background: radial-gradient(130% 100% at 50% 30%, var(--beige) 0%, var(--beige-deep) 100%);
-      opacity: 0;
-      transition: opacity 1s ease 0.1s;
-    }
-    .menu::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: url("poster-collage.jpeg") center / cover no-repeat;
-      opacity: 0.1;
-      mix-blend-mode: multiply;
-      pointer-events: none;
-    }
-    .menu.revealed { opacity: 1; }
-
-    .to-title {
-      position: fixed;
-      top: clamp(16px, 3vh, 26px);
-      left: clamp(18px, 4vw, 34px);
-      z-index: 6;
-      font-size: clamp(13px, 1.7vw, 15px);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--dove-dim);
-      transition: color 0.2s ease;
-    }
-    .to-title:hover, .to-title:focus-visible { color: var(--dove); outline: none; }
-
-    .menu-dove {
-      height: clamp(84px, 14vh, 150px);
-      width: auto;
-      margin-bottom: clamp(2px, 1vh, 12px);
-      opacity: 0.95;
-      pointer-events: none;
-      animation: float 8s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    .wordmark-img {
-      width: clamp(240px, 52vw, 500px);
-      height: auto;
-      max-height: 42vh;
-      object-fit: contain;
-      margin: 0 0 clamp(18px, 4vh, 40px);
-      mix-blend-mode: multiply;
-      user-select: none;
-    }
-    .wordmark {
-      margin: 0 0 clamp(22px, 5vh, 48px);
-      font-weight: 500;
-      font-size: clamp(30px, 6vw, 58px);
-      letter-spacing: 0.02em;
-      color: var(--dove);
-      line-height: 1.05;
-    }
-
-    nav.links {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(8px, 1.9vh, 18px);
-      align-items: center;
-    }
-    nav.links a {
-      font-size: clamp(19px, 2.9vw, 27px);
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      color: var(--dove);
-      opacity: 0.9;
-      padding: 2px 4px;
-      transition: opacity 0.2s ease;
-    }
-    nav.links a:hover,
-    nav.links a:focus-visible {
-      opacity: 1;
-      text-decoration: underline;
-      text-underline-offset: 5px;
-      text-decoration-thickness: 1px;
-      outline: none;
-    }
-
-    .title {
-      position: fixed; inset: 0; z-index: 10; background: #000;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.9s ease;
-    }
-    .title.hide { opacity: 0; pointer-events: none; }
-
-    .enter {
-      appearance: none; -webkit-appearance: none;
-      border: 0; background: transparent; padding: 0; margin: 0;
-      cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: min(72vmin, 560px); position: relative;
-    }
-    .enter:focus { outline: none; }
-
-    .ring-still {
-      width: 100%; height: auto; display: block;
-      transition: opacity 0.4s ease;
-      animation: breathe 7s ease-in-out infinite;
-    }
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-    .ring-clip {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: contain; opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
-    }
-    .enter.playing .ring-still { opacity: 0; }
-    .enter.playing .ring-clip { opacity: 1; }
-
-    .enter-hint {
-      margin-top: 22px;
-      font-weight: 400;
-      font-size: clamp(13px, 1.7vw, 15px);
-      letter-spacing: 0.42em;
-      padding-left: 0.42em;
-      text-transform: uppercase;
-      color: rgba(247, 241, 226, 0.62);
-      transition: opacity 0.5s ease;
-      animation: pulse 3.2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
-    .enter.playing .enter-hint { opacity: 0; }
-
-    .footer {
-      position: fixed; left: 50%; bottom: clamp(16px, 3vh, 30px);
-      transform: translateX(-50%); z-index: 20;
-      display: flex; gap: clamp(20px, 5vw, 44px);
-      font-size: clamp(13px, 1.7vw, 15px);
-      letter-spacing: 0.16em; text-transform: uppercase;
-    }
-    .footer a {
-      text-decoration: none; color: var(--dove-dim);
-      transition: color 0.2s ease; padding-left: 0.16em;
-    }
-    .footer a:hover, .footer a:focus-visible { color: var(--dove); outline: none; }
-    body.title-up .footer a { color: rgba(247, 241, 226, 0.5); }
-    body.title-up .footer a:hover { color: #fff; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .ring-still, .menu-dove { animation: none; }
-      .enter-hint { animation: none; opacity: 0.7; }
-      .menu, .title { transition: opacity 0.3s ease; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Professional Movers That Care</title>
+<meta name="description" content="Professional Movers That Care. Careful, punctual local moving. Call 978-482-6693.">
+<style>
+:root{--ink:#14181f;--paper:#faf8f4;--stone:#ece8df;--muted:#666d78;--gold:#a8832f;--line:#d9d4c7}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Helvetica Neue",Inter,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header{position:absolute;inset:0 0 auto 0;z-index:5}
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{font-family:Georgia,"Times New Roman",serif;font-size:20px;color:#fff;letter-spacing:.02em}
+nav a{color:#d8dce3;margin-left:30px;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+nav a:hover{color:#fff}
+.hero{background:linear-gradient(160deg,#0b1018 0%,#141c2a 70%,#1c2840 100%);color:#fff;min-height:88vh;display:flex;align-items:center}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(40px,7vw,78px);line-height:1.08;max-width:820px;margin-bottom:28px}
+.hero p{font-size:18px;color:#b9c1cf;max-width:520px;margin-bottom:40px}
+.call{display:inline-block;border:1px solid #c9a24b;color:#e6c777;padding:15px 34px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;transition:.25s}
+.call:hover{background:#c9a24b;color:#0b1018}
+section{padding:110px 0}
+.label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(28px,4.2vw,44px);line-height:1.2;max-width:700px;margin-bottom:30px}
+.about p{color:var(--muted);font-size:18px;max-width:640px;margin-bottom:18px}
+.rows{border-top:1px solid var(--line);margin-top:20px}
+.row{display:grid;grid-template-columns:1fr 2fr;gap:30px;padding:32px 0;border-bottom:1px solid var(--line)}
+.row h3{font-family:Georgia,serif;font-weight:400;font-size:22px}
+.row p{color:var(--muted)}
+.band{background:var(--stone)}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+.gallery img{width:100%;display:block}
+.gallery .wide{grid-column:span 2}
+.gallery img:not(.wide){aspect-ratio:4/3;object-fit:cover}
+.founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;border-top:1px solid var(--line);padding-top:28px}
+.founders h3{font-family:Georgia,serif;font-weight:400;font-size:26px}
+.founders p{color:var(--gold);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+.hq{font-family:Georgia,serif;font-size:24px;line-height:1.5;margin-bottom:18px}
+.hqnote{color:var(--muted);max-width:620px;font-size:17px}
+@media(max-width:700px){.founders{grid-template-columns:1fr}}
+.contact{background:#0b1018;color:#fff;text-align:center}
+.contact h2{margin:0 auto 18px;color:#fff}
+.contact p{color:#9ea8b9;margin-bottom:34px}
+.phone{display:block;font-family:Georgia,serif;font-size:clamp(34px,7vw,64px);color:#e6c777;margin-bottom:12px}
+.email{font-size:16px;letter-spacing:.04em;color:#9ea8b9}.email a:hover{color:#e6c777}
+footer{background:#070b11;color:#6a7488;font-size:12px;letter-spacing:.1em;text-align:center;padding:26px 0}
+@media(max-width:700px){nav a:not(:last-child){display:none}.row{grid-template-columns:1fr;gap:6px}.gallery{grid-template-columns:1fr}.gallery .wide{grid-column:auto}section{padding:80px 0}}
+</style>
 </head>
-<body class="title-up">
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">Professional Movers That Care</a>
+    <nav><a href="#services">Services</a><a href="#contact">Contact</a></nav>
+  </div>
+</header>
 
-  <main class="menu" id="menu" aria-hidden="true">
-    <a href="index.html" class="to-title">Title</a>
-    <img class="menu-dove" src="dove.png" alt="" />
-    <img class="wordmark-img" src="logo-handwritten.png" alt="Your Dove Hands"
-         onerror="this.style.display='none';var t=document.getElementById('wordmark-text');if(t){t.style.display='block';}" />
-    <h1 class="wordmark" id="wordmark-text" style="display:none">Your Dove Hands</h1>
-    <nav class="links">
-      <a href="live.html">Live</a>
-      <a href="demos.html">Demos</a>
-      <a href="paraphernalia.html">Paraphernalia</a>
-      <a href="moving-pictures.html">Moving Pictures</a>
-      <a href="fly.html">Fly</a>
-    </nav>
-  </main>
-
-  <div class="title" id="title">
-    <button class="enter" id="enter" aria-label="Enter Your Dove Hands">
-      <img class="ring-still" src="poster.png" alt="Your Dove Hands — a ring of doves" />
-      <video class="ring-clip" id="clip" src="animation.mp4" muted playsinline preload="auto"></video>
-      <span class="enter-hint">enter</span>
-    </button>
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <h1>Your move, handled with care.</h1>
+      <p>A young, disciplined crew that treats your belongings and your home with respect.</p>
+      <a class="call" href="tel:+19784826693">978-482-6693</a>
+    </div>
   </div>
 
-  <footer class="footer">
-    <a href="https://yourdovehands.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
-    <a href="mailto:yourdovehands@gmail.com">Email</a>
-  </footer>
+  <section class="about">
+    <div class="wrap">
+      <div class="label">Our Mission</div>
+      <h2>We carry more than boxes.</h2>
+      <p>We are passionate about moving because we believe it is about more than getting your possessions from one place to another. Finding a new home is one of the most profound experiences in a person's life, and we want to be part of that moment with care, respect, and pride in our work.</p>
+      <p>We started this company because we have lived this work. We were in the moving business for years before founding Professional Movers That Care at 24, fresh out of college, and we built it the way we always believed a moving company should be run.</p>
+    </div>
+  </section>
 
-  <script>
-    (function () {
-      var title = document.getElementById('title');
-      var enter = document.getElementById('enter');
-      var clip  = document.getElementById('clip');
-      var menu  = document.getElementById('menu');
-      var body  = document.body;
-      var done  = false;
-      var reduce = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  <section class="band">
+    <div class="wrap">
+      <div class="label">Founders</div>
+      <h2>The team behind the work.</h2>
+      <div class="founders">
+        <div><h3>Gus Valence</h3><p>Co-Founder</p></div>
+        <div><h3>Thomas Eaton</h3><p>Co-Founder</p></div>
+        <div><h3>Emily Carter</h3><p>Operations Manager</p></div>
+        <div><h3>Daniel Brooks</h3><p>Crew Lead</p></div>
+      </div>
+    </div>
+  </section>
 
-      function showMenu(instant) {
-        if (done) return;
-        done = true;
-        body.classList.remove('title-up');
-        menu.classList.add('revealed');
-        menu.setAttribute('aria-hidden', 'false');
-        if (instant) {
-          title.style.display = 'none';
-        } else {
-          title.classList.add('hide');
-          setTimeout(function () { title.style.display = 'none'; }, 950);
-        }
-      }
-      function go() {
-        if (enter.classList.contains('playing')) return;
-        if (reduce) { showMenu(false); return; }
-        enter.classList.add('playing');
-        clip.addEventListener('ended', function () { showMenu(false); }, { once: true });
-        var fallback = setTimeout(function () { showMenu(false); }, 1600);
-        clip.addEventListener('ended', function () { clearTimeout(fallback); }, { once: true });
-        var p = clip.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(function () { clearTimeout(fallback); showMenu(false); });
-        }
-      }
-      enter.addEventListener('click', go);
+  <section id="services" class="band">
+    <div class="wrap">
+      <div class="label">Services</div>
+      <h2>Local moving, start to finish.</h2>
+      <div class="rows">
+        <div class="row"><h3>Residential moves</h3><p>Apartments and houses, packed into the truck, driven across town, and placed where you want them.</p></div>
+        <div class="row"><h3>Student moves</h3><p>Dorm and off-campus move-in and move-out, scheduled around your semester.</p></div>
+        <div class="row"><h3>Loading and unloading</h3><p>Bring your own truck or container. We supply the labor.</p></div>
+        <div class="row"><h3>Furniture and heavy items</h3><p>Appliances, sofas, and awkward pieces moved with the right equipment and technique.</p></div>
+      </div>
+    </div>
+  </section>
 
-      if (location.hash === '#menu') { showMenu(true); }
-    })();
-  </script>
-  <script src="dovetrail.js" defer></script>
+  <section>
+    <div class="wrap">
+      <div class="label">The Crew</div>
+      <h2>The people behind the work.</h2>
+      <div class="gallery">
+        <img class="wide" src="images/piano.jpg" alt="Moving a piano onto the truck">
+        <img src="images/couch.jpg" alt="The crew carrying a couch">
+        <img src="images/stairs.jpg" alt="Moving a wrapped dresser down the stairs">
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="label">Headquarters</div>
+      <h2>Based in Chestnut Hill, Massachusetts.</h2>
+      <p class="hq">219 Commonwealth Ave<br>Chestnut Hill, MA 02467</p>
+      <p class="hqnote">Our team of more than 25 is made up mostly of college-age students. We created this crew to give opportunity to the higher education community we come from.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="label">Contact</div>
+      <h2>Request your free estimate.</h2>
+      <p>Call or text to schedule your move.</p>
+      <a class="phone" href="tel:+19784826693">978-482-6693</a>
+      <div class="email"><a href="mailto:professionalmoversthatcare@gmail.com">professionalmoversthatcare@gmail.com</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>&copy; <span id="yr">2026</span> PROFESSIONAL MOVERS THAT CARE</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear()</script>
 </body>
 </html>
